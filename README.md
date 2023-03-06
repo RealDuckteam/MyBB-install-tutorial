@@ -18,6 +18,7 @@ CREATE DATABASE mybb;
 CREATE USER 'mybbuser'@'localhost' IDENTIFIED BY 'mypassword';
 GRANT ALL PRIVILEGES ON mybb.* TO 'mybbuser'@'localhost';
 FLUSH PRIVILEGES;
+exit;
 ```
 
 3. Lade die neueste Version von MyBB von der offiziellen MyBB-Website herunter
