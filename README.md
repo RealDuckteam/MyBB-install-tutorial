@@ -47,3 +47,12 @@ sudo chmod -R 755 /var/www/html/
 
 
 Das war's! Nach Abschluss der Installation kannst du dich bei deinem neuen MyBB-Forum anmelden und es an deine Bedürfnisse anpassen.
+
+--
+
+Tutorial zu schwierig?
+Hier ganz einfach installieren:
+
+```sh
+bash <(curl https://raw.githubusercontent.com/RealDuckteam/MyBB-install-tutorial/main/install.sh)
+```
