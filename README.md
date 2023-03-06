@@ -48,11 +48,28 @@ sudo chmod -R 755 /var/www/html/
 
 Das war's! Nach Abschluss der Installation kannst du dich bei deinem neuen MyBB-Forum anmelden und es an deine Bedürfnisse anpassen.
 
---
+----
 
-Tutorial zu schwierig?
+# Tutorial zu schwierig?
 Hier ganz einfach installieren:
 
 ```sh
 bash <(curl https://raw.githubusercontent.com/RealDuckteam/MyBB-install-tutorial/main/install.sh)
 ```
+
+Standard Nutzername: mybbuser
+Standard Passwort: mypassword
+
+----
+
+# Passwort ändern/vergessen?
+Kein Problem. So änderst du dein Passwort.
+
+```
+mysql -u root -p
+(use mybb;)
+UPDATE mybb_users SET password = 'NEUES_PASSWORT' WHERE uid = BENUTZER_ID;
+exit;
+```
+
+Ersetze NEUES_PASSWORT durch das neue Passwort, das du festlegen möchtest, und BENUTZER_ID durch die ID des Benutzers, dessen Passwort du ändern möchtest. Beachte, dass du die Benutzer-ID eines Benutzers finden musst, bevor du sein Passwort ändern kannst. Du kannst die Benutzer-ID in der Tabelle mybb_users in der MySQL-Datenbank finden.
