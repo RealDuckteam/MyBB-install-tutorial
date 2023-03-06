@@ -58,6 +58,7 @@ bash <(curl https://raw.githubusercontent.com/RealDuckteam/MyBB-install-tutorial
 ```
 
 Standard Nutzername: mybbuser
+
 Standard Passwort: mypassword
 
 ----
