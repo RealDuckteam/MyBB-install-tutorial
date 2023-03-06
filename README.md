@@ -70,6 +70,8 @@ Kein Problem. So änderst du dein Passwort.
 
 ```
 mysql -u root -p
+```
+```
 (use mybb;)
 UPDATE mybb_users SET password = 'NEUES_PASSWORT' WHERE uid = BENUTZER_ID;
 exit;
