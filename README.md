@@ -13,7 +13,7 @@ sudo apt-get install apache2 php mysql-server php-mysql
 sudo mysql -u root -p
 ``
 
-``
+``sh
 CREATE DATABASE mybb;
 CREATE USER 'mybbuser'@'localhost' IDENTIFIED BY 'mypassword';
 GRANT ALL PRIVILEGES ON mybb.* TO 'mybbuser'@'localhost';
