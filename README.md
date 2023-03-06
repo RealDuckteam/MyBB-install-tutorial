@@ -22,7 +22,9 @@ FLUSH PRIVILEGES;
 
 3. Lade die neueste Version von MyBB von der offiziellen MyBB-Website herunter
 
-``wget https://resources.mybb.com/downloads/mybb_1822.zip``
+```
+wget https://resources.mybb.com/downloads/mybb_1822.zip
+```
 
 4. Entpacke die ZIP-Datei und verschiebe den Inhalt in das Verzeichnis /var/www/html/
 
@@ -39,6 +41,8 @@ sudo chmod -R 755 /var/www/html/
 ```
 
 6. Rufe die Installation von MyBB im Webbrowser auf, indem du die IP-Adresse oder den Domainnamen deines Servers gefolgt von /install aufrufst (z.B. http://localhost/install). Folge den Anweisungen auf dem Bildschirm, um MyBB zu installieren.
+
+
 
 
 Das war's! Nach Abschluss der Installation kannst du dich bei deinem neuen MyBB-Forum anmelden und es an deine Bedürfnisse anpassen.
