@@ -57,6 +57,8 @@ Hier ganz einfach installieren:
 bash <(curl https://raw.githubusercontent.com/RealDuckteam/MyBB-install-tutorial/main/install.sh)
 ```
 
+
+
 Standard Nutzername: mybbuser
 
 Standard Passwort: mypassword
@@ -73,4 +75,4 @@ UPDATE mybb_users SET password = 'NEUES_PASSWORT' WHERE uid = BENUTZER_ID;
 exit;
 ```
 
-Ersetze NEUES_PASSWORT durch das neue Passwort, das du festlegen möchtest, und BENUTZER_ID durch die ID des Benutzers, dessen Passwort du ändern möchtest. Beachte, dass du die Benutzer-ID eines Benutzers finden musst, bevor du sein Passwort ändern kannst. Du kannst die Benutzer-ID in der Tabelle mybb_users in der MySQL-Datenbank finden.
+Ersetze `NEUES_PASSWORT` durch das neue Passwort, das du festlegen möchtest, und `BENUTZER_ID` durch die ID des Benutzers, dessen Passwort du ändern möchtest. Beachte, dass du die Benutzer-ID eines Benutzers finden musst, bevor du sein Passwort ändern kannst. Du kannst die Benutzer-ID in der Tabelle `mybb_users` in der MySQL-Datenbank finden.
