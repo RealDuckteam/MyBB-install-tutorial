@@ -1,66 +1,36 @@
 #!/bin/bash
 
-# MyBB Version
-MYBB_VERSION="1822"
+# Install required packages
+sudo apt update
+sudo apt install apache2 mysql-server php php-mysql libapache2-mod-php php-curl php-gd php-intl php-mbstring php-soap php-xml php-xmlrpc php-zip -y
 
-# MySQL Datenbankinformationen
-DB_NAME="mybb"
-DB_USER="mybbuser"
-DB_PASSWORD="mypassword"
+# Download and extract MyBB
+wget https://mybb.com/download/latest
+unzip latest
+mv Upload mybb
+cd mybb
 
-# Pfad zur MyBB-Installationsdatei
-MYBB_INSTALL_FILE="https://resources.mybb.com/downloads/mybb_${MYBB_VERSION}.zip"
+# Create database and user for MyBB
+MYSQL_ROOT_PASSWORD='your_mysql_root_password'
+MYSQL_MYBB_PASSWORD='mybb_user_password'
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE mybb;"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER 'mybbuser'@'localhost' IDENTIFIED BY '$MYSQL_MYBB_PASSWORD';"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON mybb.* TO 'mybbuser'@'localhost';"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
 
-# Verzeichnis, in dem MyBB installiert werden soll
-INSTALL_DIR="/var/www/html/"
+# Configure MyBB
+sudo mv inc/config.default.php inc/config.php
+sudo chown www-data:www-data inc/config.php
+sudo sed -i "s/'database'/'mysqli'/" inc/config.php
+sudo sed -i "s/'db_name' => ''/'db_name' => 'mybb'/" inc/config.php
+sudo sed -i "s/'db_user' => ''/'db_user' => 'mybbuser'/" inc/config.php
+sudo sed -i "s/'db_pass' => ''/'db_pass' => '$MYSQL_MYBB_PASSWORD'/" inc/config.php
+sudo sed -i "s/'db_host' => 'localhost'/'db_host' => 'localhost'/" inc/config.php
+sudo sed -i "s/'table_prefix' => 'mybb_'/'table_prefix' => 'mybb_'/" inc/config.php
 
-# Apache2 Konfigurationsdatei für MyBB
-APACHE_CONF="mybb.conf"
+# Copy MyBB to web directory
+sudo cp -r ~/mybb/* /var/www/html/
+sudo chown -R www-data:www-data /var/www/html/
 
-# Prüfen, ob das Skript als Root ausgeführt wird
-if [ "$(id -u)" != "0" ]; then
-    echo "Das Skript muss als Root ausgeführt werden. Bitte mit sudo ausführen."
-    exit 1
-fi
-
-# Pakete installieren
-echo "Pakete werden installiert..."
-apt-get update
-apt-get install -y apache2 php mysql-server php-mysql unzip
-
-# MySQL-Datenbank und Benutzer erstellen
-echo "MySQL-Datenbank und Benutzer werden erstellt..."
-mysql -u root -p <<MYSQL
-CREATE DATABASE ${DB_NAME};
-CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost';
-FLUSH PRIVILEGES;
-MYSQL
-
-# MyBB herunterladen und installieren
-echo "MyBB wird heruntergeladen und installiert..."
-wget "${MYBB_INSTALL_FILE}"
-unzip "mybb_${MYBB_VERSION}.zip"
-mv "Upload/*" "${INSTALL_DIR}"
-chown -R www-data:www-data "${INSTALL_DIR}"
-chmod -R 755 "${INSTALL_DIR}"
-rm -rf "mybb_${MYBB_VERSION}.zip" "Upload/"
-
-# Apache2 Konfigurationsdatei für MyBB erstellen und aktivieren
-echo "Apache2-Konfigurationsdatei wird erstellt..."
-echo "<Directory ${INSTALL_DIR}>" > "/etc/apache2/sites-available/${APACHE_CONF}"
-echo "    Options FollowSymLinks" >> "/etc/apache2/sites-available/${APACHE_CONF}"
-echo "    AllowOverride All" >> "/etc/apache2/sites-available/${APACHE_CONF}"
-echo "</Directory>" >> "/etc/apache2/sites-available/${APACHE_CONF}"
-echo "<VirtualHost *:80>" >> "/etc/apache2/sites-available/${APACHE_CONF}"
-echo "    ServerAdmin webmaster@localhost" >> "/etc/apache2/sites-available/${APACHE_CONF}"
-echo "    DocumentRoot ${INSTALL_DIR}" >> "/etc/apache2/sites-available/${APACHE_CONF}"
-echo "    ServerName localhost" >> "/etc/apache2/sites-available/${APACHE_CONF}"
-echo "</VirtualHost>" >> "/etc/apache2/sites-available/${APACHE_CONF}"
-a2ensite "${APACHE_CONF}"
-
-# Apache2 neustarten
-echo "Apache2 wird neugestartet..."
-systemctl restart apache2
-
-echo "Installation abgeschlossen!"
+# Restart Apache
+sudo systemctl restart apache2
